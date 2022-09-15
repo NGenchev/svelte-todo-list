@@ -105,10 +105,6 @@
 		visibility: visible;
 	}
 
-	li ~ li {
-		margin-top: 20px;
-	}
-
 	.item__title {
 		display: block;
 		font-weight: 700;
