@@ -6,14 +6,18 @@
 <section class="section-list">
 	<h2>All Added Tasks</h2>
 
-	{#if $Todos && $Todos.length}
-		<ul>
-			{#each $Todos as todo (todo.id)}
-				<TodoItem todo={todo} on:enable-edit />
-			{/each}
-		</ul>
+	{#if $Todos.loading }
+		<h4>Loading todos...</h4>
 	{:else}
-		<h4>No Todos Left..</h4>
+		{#if $Todos && $Todos.length}
+			<ul>
+				{#each $Todos as todo (todo.id)}
+					<TodoItem todo={todo} on:enable-edit />
+				{/each}
+			</ul>
+		{:else}
+			<h4>No Todos Left..</h4>
+		{/if}
 	{/if}
 </section><!-- /.section-list -->
 

@@ -4,6 +4,13 @@
 	import TodoEditForm from './components/TodoEditForm.svelte';
 	import { fade, scale } from 'svelte/transition';
 
+	let url = "http://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/app/tasks/";
+
+	import { Todos, TodosRequest } from './stores';
+
+	const todosObject = TodosRequest([ { id: 1, title: 'Casdas', content: 'aczczxc' } ]);
+	todosObject.get( url );
+
 	let isEdit = false;
 
 	$: isEditMode = isEdit;
