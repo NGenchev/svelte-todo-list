@@ -141,10 +141,10 @@
 	}
 
 	.item__edit {	
-		background-image: url('/images/edit.svg');
+		background-image: url('../images/edit.svg');
 	}
 
 	.item__delete {
-		background-image: url('/images/delete.svg');
+		background-image: url('../images/delete.svg');
 	}
 </style>

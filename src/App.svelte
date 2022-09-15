@@ -13,6 +13,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Svelte ToDo List Application</title>
+</svelte:head>
+
 <main>
 	<h1>ToDo List Application</h1>
 
