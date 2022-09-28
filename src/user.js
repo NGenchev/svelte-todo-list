@@ -2,11 +2,17 @@ import { writable } from 'svelte/store'
 
 const authURL = 'https://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/jwt-auth/v1/';
 
-export const User = writable( [] );
-export const isUserLoggedIn = writable( false );
+export const User = writable( {
+	isLogged: false,
+	loading: false,
+	errors: null,
+	username: null,
+	token: null,
+	email: null,
+} );
 
 export const UserRequest = () => {
-	User.tryLogin = async( method, url, params = null ) => {
+	User.request = async( method, url, params = null ) => {
 		User.update( data => {
 			delete data.errors
 			data.loading = true
@@ -20,21 +26,26 @@ export const UserRequest = () => {
 		const json = await response.json()
 
 		if ( response.ok ) {
-			User.set( json );
-			isUserLoggedIn.update( () => true );
+			User.set( {
+				isLogged: true,
+				loading: false,
+				errors: null,
+				username: json.user_display_name,
+				token: json.token,
+				email: json.user_email,
+			} );
 		} else {
-			User.update( data => {
-				data.loading = false
-				data.errors = json.errors
-				isUserLoggedIn.update( () => false );
+			User.update( userObject => {
+				userObject.loading = false;
+				userObject.errors = json.message;
 
-				return data;
-			} )
+				return userObject;
+			} );
 		}
 	}
 
-	User.get 	 = ( url ) => User.request( 'GET', url );
-	User.post 	 = ( url, params ) => User.request( 'POST', url, params );
+	User.get 	= ( url ) => User.request( 'GET', url );
+	User.post 	= ( url, params ) => User.request( 'POST', url, params );
 	User.patch  = ( url, params ) => User.request( 'PATCH', url, params );
 	User.delete = ( url, params ) => User.request( 'DELETE', url, params );
 

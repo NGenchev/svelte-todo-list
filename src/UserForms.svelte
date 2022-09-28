@@ -3,8 +3,6 @@
 
 	import LoginForm from './components/LoginForm.svelte';
 	import RegisterForm from './components/RegisterForm.svelte';
-
-	const baseAPI = 'http://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/jwt-auth/v1/';
 </script>
 
 <svelte:head>

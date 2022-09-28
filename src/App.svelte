@@ -1,7 +1,7 @@
 <script>
 	import List from './List.svelte';
-	import User from './User.svelte';
-	import { isUserLoggedIn } from './user';
+	import UserForms from './UserForms.svelte';
+	import { User } from './user';
 </script>
 
 <svelte:head>
@@ -9,10 +9,10 @@
 </svelte:head>
 
 <main>
-	{#if $isUserLoggedIn}
+	{#if $User.isLogged}
 		<List />
 	{:else}
-		<User />
+		<UserForms />
 	{/if}
 </main>
 

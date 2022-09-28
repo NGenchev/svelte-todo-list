@@ -1,5 +1,7 @@
 <script>
-	import { isUserLoggedIn } from './../user';
+	import { User, UserRequest } from './../user';
+
+	const authURL = 'http://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/jwt-auth/v1/';
 
 	let username = '';
 	let password = '';
@@ -8,6 +10,8 @@
 	let isSuccessVisible = false;
 
 	let errMessage = "";
+
+	const userObject = UserRequest();
 
 	const handleSubmit = form => {
 		errMessage = "";
@@ -18,9 +22,9 @@
 			errMessage += "Please enter minimum 3 letters for the username<br>";
 		}
 
-		if ( ! password || password.length < 10 ) {
+		if ( ! password || password.length < 3 ) {
 			hasError = true;
-			errMessage += "Please enter minimum 10 symbols for the password";
+			errMessage += "Please enter minimum 3 symbols for the password";
 		}
 
 		if ( ! hasError ) {
@@ -36,10 +40,9 @@
 			// } );
 			// 
 			
-			console.log( username, password );
+			userObject.post( authURL + 'token', { username, password } );
 
-			isSuccessVisible = true;
-			isUserLoggedIn.update( () => true );
+			// isSuccessVisible = true;
 		}
 	}
 </script>
@@ -47,8 +50,10 @@
 <section class="section-form">
 	<h2>Log In</h2>
 
-	{#if hasError}
+	{#if hasError }
 		<h4 class="section__message section__message--error">{@html errMessage}</h4>
+	{:else if $User?.errors }
+		<h4 class="section__message section__message--error">{@html $User.errors}</h4>
 	{:else if isSuccessVisible }
 		<h4 class="section__message section__message--success">Successfuly logged in!</h4>
 	{/if}

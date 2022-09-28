@@ -1,14 +1,11 @@
 <script>
+	import { TodosRequest } from './stores';
+	import { fade } from 'svelte/transition';
 	import TodoList from './components/TodoList.svelte';
 	import TodoForm from './components/TodoForm.svelte';
 	import TodoEditForm from './components/TodoEditForm.svelte';
-	import { fade } from 'svelte/transition';
 
-	const baseAPI = 'http://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/app/';
-
-	let tasksURL = baseAPI + "tasks/";
-
-	import { TodosRequest } from './stores';
+	const tasksURL = 'http://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/app/tasks/';
 
 	const todosObject = TodosRequest();
 	todosObject.get( tasksURL );
