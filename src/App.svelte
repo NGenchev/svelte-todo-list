@@ -1,23 +1,7 @@
 <script>
-	import TodoList from './components/TodoList.svelte';
-	import TodoForm from './components/TodoForm.svelte';
-	import TodoEditForm from './components/TodoEditForm.svelte';
-	import { fade, scale } from 'svelte/transition';
-
-	let url = "http://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/app/tasks/";
-
-	import { Todos, TodosRequest } from './stores';
-
-	const todosObject = TodosRequest([ { id: 1, title: 'Casdas', content: 'aczczxc' } ]);
-	todosObject.get( url );
-
-	let isEdit = false;
-
-	$: isEditMode = isEdit;
-
-	const toggleEditMode = event => {
-		isEdit = event.detail;
-	}
+	import List from './List.svelte';
+	import User from './User.svelte';
+	import { isUserLoggedIn } from './user';
 </script>
 
 <svelte:head>
@@ -25,17 +9,10 @@
 </svelte:head>
 
 <main>
-	<h1>ToDo List Application</h1>
-
-	{#if !isEditMode}
-		<div class="split-section" in:fade={{ delay: 300 }} out:fade={{ duration: 300 }}>
-			<TodoForm />
-			<TodoList on:enable-edit={toggleEditMode}/>
-		</div>
+	{#if $isUserLoggedIn}
+		<List />
 	{:else}
-		<div class="split-section" in:fade={{ delay: 300 }} out:fade={{ duration: 300 }}>
-			<TodoEditForm todoId={isEditMode} on:disable-edit={toggleEditMode} />
-		</div>
+		<User />
 	{/if}
 </main>
 
@@ -62,34 +39,9 @@
 		background: linear-gradient(to top, #141e30, #1e1d37);
 	}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-		margin-bottom: 50px;
-	}
-
-	.split-section {
-		display: flex;
-		max-width: 1240px;
-		margin: 0 auto;
-	}
-
 	@media screen and (max-width: 1024px) {
 		main {
 			padding: 20px;
-		}
-	}
-
-	@media screen and (max-width: 767px) {
-		h1 {
-			font-size: 3em;
-		}
-		
-		.split-section {
-			flex-wrap: wrap;	
-			flex-direction: column-reverse;
 		}
 	}
 </style>
