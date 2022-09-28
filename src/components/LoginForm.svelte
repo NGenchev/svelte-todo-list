@@ -27,22 +27,9 @@
 			errMessage += "Please enter minimum 3 symbols for the password";
 		}
 
-		if ( ! hasError ) {
-			// Todos.update( lastTodos => {
-			// 	const newTodo = {
-			// 		id: createNewId(),
-			// 		title,
-			// 		content,
-			// 		isDone: false,
-			// 	}
-
-			// 	return [...lastTodos, newTodo ];
-			// } );
-			// 
-			
+		if ( ! hasError ) {			
 			userObject.post( authURL + 'token', { username, password } );
-
-			// isSuccessVisible = true;
+			isSuccessVisible = true;
 		}
 	}
 </script>
@@ -52,7 +39,7 @@
 
 	{#if hasError }
 		<h4 class="section__message section__message--error">{@html errMessage}</h4>
-	{:else if $User?.errors }
+	{:else if $User.errors }
 		<h4 class="section__message section__message--error">{@html $User.errors}</h4>
 	{:else if isSuccessVisible }
 		<h4 class="section__message section__message--success">Successfuly logged in!</h4>

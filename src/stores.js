@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store'
+import Cookies from 'js-cookie'
 
 export const Todos = writable( [] );
 
@@ -11,17 +12,22 @@ export const TodosRequest = () => {
 			return data;
 		} );
 
-		const headers = { "Content-type": "application/json" }
-		const body = params ? JSON.stringify( params ) : undefined
-		const response = await fetch( url, { method, body, headers } )
-		const json = await response.json()
+		const userToken = Cookies.get( '_svelte_app_token' )
+
+		const headers = { 
+			"Authorization": "Bearer " + userToken,
+		};
+
+		const body = params ? JSON.stringify( params ) : undefined;
+		const response = await fetch( url, { method, body, headers } );
+		const json = await response.json();
 
 		if ( response.ok ) {
 			Todos.set( json )
 		} else {
 			Todos.update( data => {
-				data.loading = false
-				data.errors = json.errors
+				data.loading = false;
+				data.errors = json.errors;
 
 				return data;
 			} )
