@@ -21,7 +21,7 @@ export const UserRequest = () => {
 			return data;
 		} );
 
-		let headers = { 'Accept': 'application/json, text/plain, */*', 'Content-Type': 'application/json' };
+		let headers = { 'Accept': 'application/json, text/plain, */*' };
 		if ( forceHeaders ) {
 			headers = forceHeaders;
 		}

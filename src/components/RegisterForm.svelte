@@ -1,14 +1,19 @@
 <script>
-	let username 		= '';
-	let email 			= '';
-	let password 		= '';
-	let password_conf 	= '';
+	import { User, UserRequest } from './../user';
+
+	const baseURL = 'http://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/app/register';
+
+	let username = '';
+	let email = '';
+	let password = '';
+	let password_conf = '';
 
 	let hasError = false;
 	let isSuccessVisible = false;
-	let submitted = false;
 
 	let errMessage = "";
+
+	const userObject = UserRequest();
 
 	const handleSubmit = form => {
 		errMessage = "";
@@ -19,26 +24,18 @@
 			errMessage += "Please enter minimum 3 letters for the username<br>";
 		}
 
-		if ( ! password || password.length < 10 ) {
+		if ( ! password || password.length < 3 ) {
 			hasError = true;
-			errMessage += "Please enter minimum 10 symbols for the password";
+			errMessage += "Please enter minimum 3 symbols for the password<br>";
 		}
 
-		if ( ! hasError ) {
-			// Todos.update( lastTodos => {
-			// 	const newTodo = {
-			// 		id: createNewId(),
-			// 		title,
-			// 		content,
-			// 		isDone: false,
-			// 	}
+		if ( password != password_conf ) {
+			hasError = true;
+			errMessage += "Please match the confirm password!";
+		}
 
-			// 	return [...lastTodos, newTodo ];
-			// } );
-			// 
-			
-			console.log( username, password );
-
+		if ( ! hasError ) {			
+			userObject.post( baseURL, { username, email, password }, {} );
 			isSuccessVisible = true;
 		}
 	}
@@ -47,8 +44,10 @@
 <section class="section-form">
 	<h2>Create a new account</h2>
 
-	{#if hasError}
+	{#if hasError }
 		<h4 class="section__message section__message--error">{@html errMessage}</h4>
+	{:else if $User.errors }
+		<h4 class="section__message section__message--error">{@html $User.errors}</h4>
 	{:else if isSuccessVisible }
 		<h4 class="section__message section__message--success">Successfuly logged in!</h4>
 	{/if}
