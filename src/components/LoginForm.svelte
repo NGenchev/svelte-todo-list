@@ -1,8 +1,6 @@
 <script>
 	import { User, UserRequest } from './../user';
 
-	const authURL = 'http://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/jwt-auth/v1/';
-
 	let username = '';
 	let password = '';
 
@@ -28,7 +26,7 @@
 		}
 
 		if ( ! hasError ) {			
-			userObject.post( authURL + 'token', { username, password } );
+			userObject.post( 'jwt-auth/v1/token', { username, password } );
 			isSuccessVisible = true;
 		}
 	}

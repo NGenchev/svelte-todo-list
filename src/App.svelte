@@ -7,10 +7,8 @@
 	const userToken = Cookies.get( '_svelte_app_token' );
 
 	if ( userToken ) {
-		const authURL = 'http://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/jwt-auth/v1/token/validate';
 		const userObject = UserRequest();
-
-		userObject.post( authURL, null, { "Authorization": "Bearer " + userToken } );
+		userObject.post( "jwt-auth/v1/token/validate", null, { "Authorization": "Bearer " + userToken } );
 	}
 </script>
 

@@ -10,10 +10,8 @@
 	import TodoForm from './components/TodoForm.svelte';
 	import TodoEditForm from './components/TodoEditForm.svelte';
 
-	const tasksURL = 'http://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/app/tasks/';
-
 	const todosObject = TodosRequest();
-	todosObject.get( tasksURL );
+	todosObject.get();
 
 	let isEdit = false;
 
@@ -91,6 +89,8 @@
 	.section__logout {
 		text-align: right;
 		padding: 20px 0;
+		max-width: 1240px;
+		margin: 0 auto;
 	}
 
 	.section__logout a {

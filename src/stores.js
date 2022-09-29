@@ -1,10 +1,13 @@
 import { writable } from 'svelte/store'
 import Cookies from 'js-cookie'
+import Config from './config';
 
 export const Todos = writable( [] );
 
 export const TodosRequest = () => {
-	Todos.request = async( method, url, params = null ) => {
+	Todos.request = async( method, params = null ) => {
+		const tasksURL = Config.API_URL + 'app/tasks/';
+
 		Todos.update( data => {
 			delete data.errors
 			data.loading = true
@@ -19,7 +22,7 @@ export const TodosRequest = () => {
 		};
 
 		const body = params ? JSON.stringify( params ) : undefined;
-		const response = await fetch( url, { method, body, headers } );
+		const response = await fetch( tasksURL, { method, body, headers } );
 		const json = await response.json();
 
 		if ( response.ok ) {
@@ -34,10 +37,10 @@ export const TodosRequest = () => {
 		}
 	}
 
-	Todos.get 	 = ( url ) => Todos.request( 'GET', url );
-	Todos.post 	 = ( url, params ) => Todos.request( 'POST', url, params );
-	Todos.patch  = ( url, params ) => Todos.request( 'PATCH', url, params );
-	Todos.delete = ( url, params ) => Todos.request( 'DELETE', url, params );
+	Todos.get 	 = () => Todos.request( 'GET', );
+	Todos.post 	 = params => Todos.request( 'POST', params );
+	Todos.patch  = params => Todos.request( 'PATCH', params );
+	Todos.delete = params => Todos.request( 'DELETE', params );
 
 	return Todos;
 }

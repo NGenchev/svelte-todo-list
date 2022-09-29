@@ -2,6 +2,7 @@
 
 import { writable } from 'svelte/store'
 import Cookies from 'js-cookie'
+import Config from './config';
 
 export const User = writable( {
 	isLogged: false,
@@ -13,7 +14,9 @@ export const User = writable( {
 } );
 
 export const UserRequest = () => {
-	User.request = async( method, url, params = null, forceHeaders = null ) => {
+	User.request = async( method, endpoint, params = null, forceHeaders = null ) => {
+		const baseURL = Config.API_URL + endpoint;
+
 		User.update( data => {
 			delete data.errors
 			data.loading = true
@@ -21,13 +24,13 @@ export const UserRequest = () => {
 			return data;
 		} );
 
-		let headers = { 'Accept': 'application/json, text/plain, */*' };
+		let headers = { 'Accept': 'application/json, text/plain, */*', 'Content-Type': 'application/json' };
 		if ( forceHeaders ) {
 			headers = forceHeaders;
 		}
 
 		const body = params ? JSON.stringify( params ) : undefined
-		const response = await fetch( url, { method, body, headers } )
+		const response = await fetch( baseURL, { method, body, headers } )
 		const json = await response.json()
 
 		if ( response.ok ) {

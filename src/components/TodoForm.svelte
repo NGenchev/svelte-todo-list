@@ -1,6 +1,6 @@
 <script>
 	import { Todos } from './../stores';
-	import createNewId from './../uniqueId';
+	import { User } from './../user';
 
 	let title = '';
 	let content = '';
@@ -26,16 +26,13 @@
 		}
 
 		if ( ! hasError ) {
-			Todos.update( lastTodos => {
-				const newTodo = {
-					id: createNewId(),
-					title,
-					content,
-					isDone: false,
-				}
-
-				return [...lastTodos, newTodo ];
-			} );
+			const newTodo = {
+				title,
+				content,
+				isDone: false,
+			}
+			
+			Todos.post( { task: newTodo, user: $User } );
 
 			isSuccessVisible = true;
 		}

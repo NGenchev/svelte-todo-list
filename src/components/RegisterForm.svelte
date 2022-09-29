@@ -1,15 +1,12 @@
 <script>
 	import { User, UserRequest } from './../user';
 
-	const baseURL = 'http://ngenchev.2create.studio/Mentor/ngenchev/svelte/wordpress/wp-json/app/register';
-
 	let username = '';
 	let email = '';
 	let password = '';
 	let password_conf = '';
 
 	let hasError = false;
-	let isSuccessVisible = false;
 
 	let errMessage = "";
 
@@ -35,8 +32,7 @@
 		}
 
 		if ( ! hasError ) {			
-			userObject.post( baseURL, { username, email, password }, {} );
-			isSuccessVisible = true;
+			userObject.post( 'app/register', { username, email, password } );
 		}
 	}
 </script>
@@ -48,7 +44,7 @@
 		<h4 class="section__message section__message--error">{@html errMessage}</h4>
 	{:else if $User.errors }
 		<h4 class="section__message section__message--error">{@html $User.errors}</h4>
-	{:else if isSuccessVisible }
+	{:else if $User.isLogged }
 		<h4 class="section__message section__message--success">Successfuly logged in!</h4>
 	{/if}
 
@@ -111,16 +107,10 @@
 
 	input[type="text"],
 	input[type="email"],
-	input[type="password"],
-	textarea {
+	input[type="password"] {
 		width: 100%;
 		padding: .6rem;
 		border-radius: 10px;
-	}
-
-	textarea {
-		height: 200px;
-		resize: none;
 	}
 
 	input[type="submit"] {
