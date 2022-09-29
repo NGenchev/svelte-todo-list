@@ -2,6 +2,8 @@
 	export let todo;
 
 	import { Todos } from '../stores';
+	import { User } from './../user';
+
 	import { createEventDispatcher } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
 
@@ -24,11 +26,7 @@
 	}
 
 	const deleteTodo = itemId => {
-		Todos.update( lastTodos => {
-			return lastTodos.filter( (item) => {
-				return item.id !== itemId;
-			} );
-		} );
+		Todos.delete( { task: itemId, user: $User } );
 	}
 </script>
 
