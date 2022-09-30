@@ -7,30 +7,24 @@
 	import { createEventDispatcher } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
 
-	const toggleTodo = itemId => {
-		Todos.update( lastTodos => {
-			return lastTodos.map( (item) => {
-				if ( item.id == itemId ) {
-					item.isDone = ! item.isDone;
-				}
-
-				return item;
-			} );
-		} );
-	}
-
 	const dispatch = createEventDispatcher();
 
-	const editTodo = itemId => {
-		dispatch( 'enable-edit', itemId );
+	const toggleTodo = () => {
+		const todoObject = {...todo, isDone: !todo.isDone };
+
+		Todos.patch( { task: todoObject, user: $User } );
 	}
 
-	const deleteTodo = itemId => {
-		Todos.delete( { task: itemId, user: $User } );
+	const editTodo = () => {
+		dispatch( 'enable-edit', todo.id );
+	}
+
+	const deleteTodo = () => {
+		Todos.delete( { task: todo.id, user: $User } );
 	}
 </script>
 
-<li class="{todo.isDone ? 'is-done' : ''}" on:click={ () => toggleTodo( todo.id ) } in:scale|local out:fade|local>
+<li class="{todo.isDone ? 'is-done' : ''}" on:click={ () => toggleTodo() } in:scale|local out:fade|local>
 	<div class="item">
 		<div class="item__title">#{todo.id}: {todo.title}</div>
 
@@ -38,8 +32,8 @@
 	</div>
 
 	<div class="item__actions">
-		<button class="item__edit" on:click|preventDefault|stopPropagation={ () => editTodo( todo.id ) }></button>
-		<button class="item__delete" on:click|preventDefault|stopPropagation={ () => deleteTodo( todo.id ) }></button>
+		<button class="item__edit" on:click|preventDefault|stopPropagation={ () => editTodo() }></button>
+		<button class="item__delete" on:click|preventDefault|stopPropagation={ () => deleteTodo() }></button>
 	</div>
 </li>
 

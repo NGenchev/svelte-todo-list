@@ -7,11 +7,10 @@
 
 	let hasError = false;
 	let isSuccessVisible = false;
-	let submitted = false;
 
 	let errMessage = "";
 
-	const handleSubmit = form => {
+	const handleSubmit = () => {
 		errMessage = "";
 		hasError = false;
 

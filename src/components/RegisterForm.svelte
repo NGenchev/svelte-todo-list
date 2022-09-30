@@ -12,7 +12,7 @@
 
 	const userObject = UserRequest();
 
-	const handleSubmit = form => {
+	const handleSubmit = () => {
 		errMessage = "";
 		hasError = false;
 

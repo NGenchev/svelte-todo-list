@@ -1,9 +1,10 @@
 <script>
 	export let todoId;
 
-	import { createEventDispatcher } from 'svelte';
-	import { fade, scale } from 'svelte/transition';
 	import { Todos } from './../stores';
+	import { User } from './../user';
+
+	import { createEventDispatcher } from 'svelte';
 
 	let currentTodo = $Todos.filter( todo => todo.id == todoId )[0];
 	let title = currentTodo.title;
@@ -13,11 +14,10 @@
 
 	let hasError = false;
 	let isSuccessVisible = false;
-	let submitted = false;
 
 	let errMessage = "";
 
-	const handleSubmit = form => {
+	const handleSubmit = () => {
 		errMessage = "";
 		hasError = false;
 
@@ -32,17 +32,14 @@
 		}
 
 		if ( ! hasError ) {
-			Todos.update( lastTodos => {
-				return lastTodos.map( todo => {
-					if ( todo.id === todoId ) {
-						todo.title = title;
-						todo.content = content;
-						todo.isDone = false;
-					}
+			const newTodo = {
+				id: todoId,
+				title,
+				content,
+				isDone: false,
+			}
 
-					return todo;
-				} );
-			} );
+			Todos.patch( { task: newTodo, user: $User } );					
 
 			dispatch( 'disable-edit', false );
 			isSuccessVisible = true;
